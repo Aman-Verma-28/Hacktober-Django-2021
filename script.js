@@ -1,42 +1,53 @@
-var img=null;
-var baseimage=document.getElementById("input");
- var canvas=document.getElementById("can");
-function upload(){
-  var file=document.getElementById("input");
-  img=new SimpleImage(file);
-  img.drawTo(canvas);
+var fgimginput=null;
+var bgimginput=null;
+var fgcan;
+var bgcan;
+function uploadfg(){
+  var fgi=document.getElementById("fgimage");
+  fgimginput=new SimpleImage(fgi);
+fgcan=document.getElementById("fgcanvas");
+  fgimginput.drawTo(fgcan);
 }
-function dogray(){
-  var grayimg=new SimpleImage(img);
-  for(var px of grayimg.values()){
-    var avg=(px.getRed()+px.getGreen()+px.getBlue())/3;
-    px.setRed(avg);
-    px.setGreen(avg);
-    px.setBlue(avg);
-  }
-  grayimg.drawTo(canvas);
+function uploadbg(){
+  var bgi=document.getElementById("bgimage");
+  bgimginput=new SimpleImage(bgi);
+bgcan=document.getElementById("bgcanvas");
+  bgimginput.drawTo(bgcan);
 }
-function dorainbow(){
-  var rainbow=new SimpleImage(img);
-  for(var px of rainbow.values()){
-    var y=px.getY();
+
+function creatcomposition(){
+fgcan=document.getElementById("fgcanvas");
+bgcan=document.getElementById("bgcanvas");
+  var output=new SimpleImage(fgimginput.getWidth(),fgimginput.getHeight());
+  for(var px of fgimginput.values()){
     var x=px.getX();
-   if(px.getY()<=240){
-     px.setRed(200);
-   } 
-    if(240<px.getY()<=480){
-      px.setGreen(200);
+    var y=px.getY();
+    if(px.getGreen()>px.getRed()+px.getBlue()){
+      bgpx=bgimginput.getPixel(x,y);
+      output.setPixel(x,y,bgpx);
     }
-    if(480<px.getY()<=720){
-      px.setBlue(200);
-    }
-    if(px.getY()>720){
-      px.setRed(200);
+    else{
+      output.setPixel(px.getX(),px.getY(),px);
     }
   }
-  rainbow.drawTo(canvas);
+  return output;
 }
-function doclear(){
-  var base=new SimpleImage(baseimage);
-  base.drawTo(canvas);
+function dogreenscreen(){
+  if(fgimginput==null || ! fgimginput.complete()){
+    alert("foreground image not found");
+  }
+  if(bgimginput==null || ! bgimginput.complete()){
+    alert("background image not found");
+  }
+  clearCanvas();
+  var finalimage=creatcomposition();
+  finalimage.drawTo(fgcan);
+}
+function clearCanvas(){
+  doClear(fgcan);
+  doClear(bgcan);
+}
+function doClear(canvas) {
+  var context = canvas.getContext("2d");
+  context.clearRect(0,0,canvas.width,canvas.height);
 }

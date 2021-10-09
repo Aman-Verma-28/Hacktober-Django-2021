@@ -9,18 +9,23 @@
 <body>
 <!-- partial:index.partial.html -->
 <html>
-  <h1>Modifing Image</h1>
+  <h1>Green Screen Program</h1>
   <script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js">
   </script>
-  <canvas id="can">
+  <canvas id="fgcanvas">
   </canvas>
- <p>
-   <input type="file" multiple="false" accept="image/*" id="input" onchange="upload()">
+  <canvas id="bgcanvas">
+  </canvas>
+  <p>
+    Foreground image:
+    <input type="file" multiple="false" accept="image/*" id="fgimage" onchange="uploadfg()">
   </p>
   <p>
-    <input type="button" value="Grayscale" onclick="dogray()">
-    <input type="button" value="Rainbow" onclick="dorainbow()">
-    <input type="button" value="Clear" onclick="doclear()">
+    Background image:
+    <input type="file" multiple="false" accept="image/*" id="bgimage" onchange="uploadbg()">
+  </p>
+  <input type="button" value="Creat composition" onclick="dogreenscreen()">
+  <input type="button" value="Clear canvas" onclick="clearCanvas()">
   </p>
 </html>
 <!-- partial -->
