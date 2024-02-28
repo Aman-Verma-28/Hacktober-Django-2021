@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 def print_rangoli(size):
     alpha = "abcdefghijklmnopqrstuvwxyz"
